@@ -5,56 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Word Guess Game</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        @keyframes letteranim {
-            50% {
-                transform: translateY(-5px) scale(1.05);
-            }
-        }
-        .letter {
-            color: transparent;
-            display: inline-block;
-            border-bottom: 5px solid #53bdff;
-            margin: 0 10px;
-            font-size: 50px;
-            padding: 10px;
-            text-transform: uppercase;
-        }
-        .word {
-            display: block;
-            white-space: nowrap;
-        }
-        .correct {
-            color: #53bdff;
-            text-shadow: 1px 2px 0 #20a9ff;
-            animation: letteranim .3s ease;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<section id="word-guess">
-    <header>
+<section class="game__word-guess">
+    <header class="game__title">
         <h1>Word Guess</h1>
-        <h2>Press any key to get started!</h2>
-        <p>The theme is 'Musical artists that go by a one word name'.</p>
     </header>
-    <section id="game-board">
-        <h3>Current Word:</h3>
-        <div id="current-word"></div>
-        <p class="hint"></p>
-        <div id="notices"></div>
-        <div class="used-letters">
-            <p class="hidden" id="wrong-letter-title">Incorrect letters already guessed.</p>
+    <div class="score-board">
+        <div class="score-board__block">
+            <div id="games-won" class="score-board__block-number"></div>
+            <div class="score-board__block-string">Wins</div>
+        </div>
+        <div class="score-board__block">
+            <div id="games-lost" class="score-board__block-number"></div>
+            <div class="score-board__block-string">Losses</div>
+        </div>
+        <div class="score-board__block">
+            <div id="attempts-remaining" class="score-board__block-number"></div>
+            <div class="score-board__block-string">Attempts Left</div>
+        </div>
+    </div>
+    <div class="game__instructions">
+        <h2>Press any key to get started!</h2>
+        <p class="game__theme">The theme is 'Musical artists that go by a one word name'.</p>
+    </div>
+    <section id="game__board">
+        <div class="game__notice"></div>
+        <div id="current-word" class="game__word"></div>
+        <p class="game__hint"></p>
+        <div class="game__used-letters">
             <div id="wrong-letters"></div>
+            <h4 class="letters-attempted" id="letters-attempted">Letters Attempted</h4>
         </div>
     </section>
-    <footer class="info">
-        <p><span id="attempts-remaining"></span>&nbsp;Guesses Remaining.</p>
-        <p><span id="games-won"></span>&nbsp;Games Won</p>
-    </footer>
+    <div class="timer__overlay">
+        <h1 class="timer__message"></h1>
+        <p class="timer__patience">Game play will resume in...</p>
+        <p class="timer__time-left"></p>
+    </div>
 </section>
 <script src="assets/js/app.js"></script>
 </body>

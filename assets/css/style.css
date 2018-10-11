@@ -1,0 +1,186 @@
+html {
+    box-sizing: border-box;
+    font-size: 100%;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    color: #263238;
+    font-family: "Lato", Arial, sans-serif;
+    margin: 0;
+}
+
+@keyframes letters {
+    50% {
+        transform: translateY(-5px) scale(1.05);
+    }
+}
+
+@keyframes winner {
+    0% { color: red; }
+    49% { color: orange; }
+    50% { color: yellow; }
+    99% { color: green; }
+    100% { color: crimson; }
+}
+
+.game__word-guess {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.game__title {
+    font-size: 7rem;
+    margin: 0;
+    text-align: center;
+}
+
+.game__title h1 {
+    margin: 0 0 1.5rem 0;
+}
+
+.game__instructions,
+.game__used-letters {
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.game__board {
+    align-items: center;
+    justify-content: center;
+}
+
+.game__notice,
+.game__theme,
+.game__hint,
+.game__word,
+.letters-attempted {
+    text-align: center;
+}
+
+.letters-attempted {
+    display: none;
+}
+
+.game-won {
+    animation: winner 0.8s infinite;
+}
+
+.game-lost {
+    color: yellow;
+}
+
+.timer__overlay {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 2;
+}
+
+.timer__time-left {
+    color: white;
+    font-size: 20rem;
+    font-weight: 100;
+    margin: 0;
+    position: relative;
+    text-align: center;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.timer__message {
+    text-align: center;
+    font-size: 8rem;
+}
+
+.timer__patience {
+    text-align: center;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.score-board {
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    justify-content: space-around;
+    width: 600px;
+}
+
+.score-board__block {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    text-align: center;
+    width: 100px;
+}
+
+.score-board__block-number {
+    font-size: 2rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.score-board__block-string {
+    font-size: 0.7rem;
+    line-height: 1.125rem;
+    opacity: 0.4;
+}
+
+.guessed-letter,
+.word {
+    display: block;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.letter,
+.guessed-letter {
+    border-bottom: 5px solid #53bdff;
+    display: inline-block;
+    font-size: 3.125rem;
+    margin: 0 10px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.letter {
+    color: transparent;
+}
+
+.guessed-letter {
+    border-bottom-color: darkred;
+}
+
+.correct {
+    animation: letters .3s ease;
+    color: #53bdff;
+}
+
+.incorrect {
+    animation: letters .3s ease;
+    color: darkred;
+}
