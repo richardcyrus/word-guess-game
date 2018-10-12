@@ -35,6 +35,7 @@
         elGamesLost: document.querySelector('#games-lost'),
         elGamesWon: document.querySelector('#games-won'),
         elHint: document.querySelector('.game__hint'),
+        elGameNotice: document.querySelector('.game__notice'),
         elTimerMessage: document.querySelector('.timer__message'),
         elTimerOverlay: document.querySelector('.timer__overlay'),
         elTimerTimeLeft: document.querySelector('.timer__time-left'),
@@ -69,11 +70,11 @@
         playerGuess: function (event) {
             let guess = event.key;
 
-            if (guess.match(/[a-zA-Z]/) && guess.length === 1) {
+            if (guess.match(/[a-zA-Z!$]/) && guess.length === 1) {
 
                 if (this.wrongLetters.includes(guess) || this.correctLetters.includes(guess)) {
-                    // TODO: Use a flash message instead of an alert.
-                    // alert('You have tried that letter before. Please try again!');
+                    // TODO: Fix the trigger of the Flash Message.
+                    // this.elGameNotice.?;
                 }
                 else {
                     let validCharacters = this.validateGuess(guess);
@@ -163,20 +164,21 @@
         chooseWord: function (padAttempts = 2) {
             let choice = this.words[Math.floor(Math.random() * this.words.length)];
 
-            this.remainingAttempts = choice.length + padAttempts;
+            this.remainingAttempts = choice.word.length + padAttempts;
 
             let letters = [];
-            for (let i = 0; i < choice.length; i++) {
+            for (let i = 0; i < choice.word.length; i++) {
                 letters.push({
-                    character: choice[i],
+                    character: choice.word[i].toLowerCase(),
                     pos: i
                 });
             }
 
             return {
                 characters: letters,
-                word: choice.toLowerCase(),
-                totalCharacters: choice.length
+                word: choice.word.toLowerCase(),
+                totalCharacters: choice.word.length,
+                hint: choice.hint
             };
         },
 
@@ -196,9 +198,12 @@
             el += '</ul>';
 
             this.elCurrentWord.innerHTML = el;
+            if ('hint' in this.currentWord) {
+                this.elHint.innerHTML = this.currentWord.hint;
+            }
 
             // Set at start.
-            this.elAttemptsLeft.innerHTML = this.remainingAttempts;
+            this.elAttemptsLeft.textContent = this.remainingAttempts;
             this.elGamesWon.textContent = `${numberOfWins}`;
             this.elGamesLost.textContent = `${numberOfLosses}`;
         },
@@ -238,6 +243,13 @@
             this.elWrongLetters.innerHTML = "";
             this.elTimerOverlay.style.display = 'none';
             this.elTimerTimeLeft.textContent = '';
+
+            try {
+                this.elTimerMessage.classList.remove('game-won', 'game-lost');
+            } catch (ex) {
+                // ignore the error generated when the class is not
+                // on the element.
+            }
 
             // Start next game.
             this.init(this.words);
@@ -297,56 +309,40 @@
     };
 
     const wordList = [
-        'aaliyah',
-        'adele',
-        'beck',
-        'beyonce',
-        'bjork',
-        'bono',
-        'brandy',
-        'cher',
-        'common',
-        'coolio',
-        'dido',
-        'drake',
-        'elvis',
-        'eminem',
-        'enya',
-        'fergie',
-        'flea',
-        'jewel',
-        'kesha',
-        'liberace',
-        'lorde',
-        'ludacris',
-        'macklemore',
-        'madonna',
-        'meatloaf',
-        'moby',
-        'morrissey',
-        'nelly',
-        'pink',
-        'pitbull',
-        'prince',
-        'redman',
-        'rihanna',
-        'ringo',
-        'rupaul',
-        'sade',
-        'seal',
-        'selena',
-        'shaggy',
-        'shakira',
-        'sia',
-        'slash',
-        'sting',
-        'tupac',
-        'usher',
+        {word: "Eminem", hint: "He holds the world record for the most words in a hit single."},
+        {word: "Madonna", hint: "She's known as <i>The Material Girl</i>."},
+        {word: "Prince", hint: "He played 27 instruments on his debut album."},
+        {word: "Elvis", hint: "He holds the record for most top 10 hits on the UK Singles Chart."},
+        {word: "Beyonce", hint: "Whose 2013 world tour was called <i>The Mrs Carter Show</i>?"},
+        {word: "Rihanna", hint: "My real name is Robyn Fenty."},
+        {word: "Meatloaf", hint: "My real name is Michael Lee Aday."},
+        {word: "Adele", hint: "This British pop star won 5 Grammy's including Album of the Year in 2017."},
+        {word: "Shakira", hint: "In 2006, my song <i>Hips Don't Lie</i> hit the #1 spot in over 50 different countries."},
+        {word: "P!nk", hint: "I sang the lyric <i>I'm not here for your entertainment, you don't really wanna mess with ne tonight</i>."},
+        {word: "Aqua", hint: "We sing the song <i>Barbie Girl</i>."},
+        {word: "Aaliyah", hint: "My last hit song was <i>Rock the boat</i>."},
+        {word: "Nelly", hint: "Some of my hit songs are <i>Country Grammar</i>, <i>Ride Wit Me</i> and <i>Hot in Herre</i>."},
+        {word: "Usher", hint: "I sang with Alicia Keys on the 2004 hit single <i>My Boo</i>."},
+        {word: "Dido", hint: "I've been told my real name is very extravagant. A sample of one of my songs was used on Eminem's song <i>Stan</i>."},
+        {word: "Nivea", hint: "Some of my hits are <i>Laundromat</i> and <i>Don't Mess with My Man</i>."},
+        {word: "Ke$ha", hint: "I sing the party song <i>Blow</i>."},
+        {word: "Ludacris", hint: "I sing <i>Splash Waterfalls</i>."},
+        {
+            word: "Shaggy",
+            hint: "<i>&lsquo;The gift of life astounds me to this day; I give it up for the woman; She's the constant wind that fills my sails; Oh, that woman&rsquo;</i>"
+        },
+        {word: "Ashanti", hint: "I recorded the single <i>Only U</i>."},
+        {word: "Fergie", hint: "In the video for my 2007 chart topper <i>Glamorous</i>, I'm seen on a plane."},
+        {word: "Creed", hint: "Some of our hits include <i>Arms Wide Open</i>, <i>My Sacrifice</i> and <i>One Last Breath</i>."},
+        {word: "Jibbs", hint: "I have a song with the phrase <i>&lsquo;bout 24 inches is how low I let it hang</i>."},
+        {word: "Evanescense", hint: "Which band sings these lyrics? <i>Lay down your head and stay awhile</i>."},
+        {word: "Nickelback", hint: "Our band had the hit single <i>Someday</i>."},
+        {word: "Chester", hint: "I'm the lead singer in Linkin Park."}
     ];
 
     WordGuess.init(wordList);
 
-    window.addEventListener('keyup', (e) => {
+    window.addEventListener('keypress', (e) => {
         WordGuess.playerGuess(e)
     });
 
