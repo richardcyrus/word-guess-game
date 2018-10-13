@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Word Guess Game</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Spectral:400i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Yellowtail" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <section class="game__word-guess">
     <header class="game__title">
-        <h1>Word Guess</h1>
+        <h1>Pop Music Trivia!</h1>
     </header>
     <div class="score-board">
         <div class="score-board__block">
@@ -28,12 +29,13 @@
         </div>
     </div>
     <div class="game__instructions">
-        <h2>Press any key to get started!</h2>
-        <p class="game__theme">The theme is 'Musical artists that go by a one word name'.</p>
+        <h2>Type the letters to complete the word!</h2>
     </div>
     <section id="game__board">
         <div class="game__notice"></div>
         <div id="current-word" class="game__word"></div>
+    </section>
+    <section class="game__collateral">
         <p class="game__hint"></p>
         <div class="game__used-letters">
             <div id="wrong-letters"></div>

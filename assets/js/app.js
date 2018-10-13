@@ -56,8 +56,6 @@
         init: function (words) {
             this.words = words;
             this.currentWord = this.chooseWord();
-
-            console.log(this.currentWord);
             this.startPlay();
         },
 
@@ -73,8 +71,7 @@
             if (guess.match(/[a-zA-Z!$]/) && guess.length === 1) {
 
                 if (this.wrongLetters.includes(guess) || this.correctLetters.includes(guess)) {
-                    // TODO: Fix the trigger of the Flash Message.
-                    // this.elGameNotice.?;
+                    this.elGameNotice.innerHTML = '<p class="flash-warning">You\'ve tried that letter before. Please try again!</p>';
                 }
                 else {
                     let validCharacters = this.validateGuess(guess);
