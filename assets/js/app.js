@@ -23,6 +23,31 @@
 (function (window) {
     'use strict';
 
+    /**
+     * A Fisher-Yates shuffle to ensure that for each turn of the game
+     * the word presented is unique.
+     *
+     * @see https://bost.ocks.org/mike/shuffle/
+     * @see https://www.frankmitchell.org/2015/01/fisher-yates/
+     *
+     * @param list
+     *
+     * @returns {*}
+     */
+    function shuffle(list) {
+        let remaining = list.length, pick, current;
+
+        while(0 !== remaining) {
+            pick = Math.floor(Math.random() * remaining--);
+
+            current = list[remaining];
+            list[remaining] = list[pick];
+            list[pick] = current;
+        }
+
+        return list;
+    }
+
     // Track the game stats for the player.
     let numberOfWins = 0;
     let numberOfLosses = 0;
@@ -46,6 +71,7 @@
         restartSeconds: 5,
         words: [],
         wrongLetters: [],
+        wordList: [],
 
         /**
          * Populate the word list, choose the first word of play, and
@@ -54,7 +80,22 @@
          * @param words
          */
         init: function (words) {
-            this.words = words;
+            /**
+             * Copy the word list at page load. This should
+             * never be zero again.
+             */
+            if (this.wordList.length === 0) {
+                this.wordList = words.slice();
+            }
+
+            /**
+             * Shuffle here so the list is always unique.
+             *
+             * It matters because when the list is exhausted, it's seeded
+             * again from `this.wordList`. `this.init()` runs every time
+             * the player wins or loses.
+             */
+            this.words = shuffle(words);
             this.currentWord = this.chooseWord();
             this.startPlay();
         },
@@ -159,7 +200,12 @@
          * @returns {{characters: Array, word: string, totalCharacters: *}}
          */
         chooseWord: function (padAttempts = 2) {
-            let choice = this.words[Math.floor(Math.random() * this.words.length)];
+            /**
+             * Since the playable word list is a random shuffle, we take the
+             * next word from the front of the list. This causes the words
+             * presented to always be unique until the end of `this.words`.
+             */
+            let choice = this.words.shift();
 
             this.remainingAttempts = choice.word.length + padAttempts;
 
@@ -228,12 +274,12 @@
          * Start the play again.
          */
         resetGame: function () {
-            // Clear in game trackers.
+            // Clear per word trackers.
             this.wrongLetters = [];
             this.correctLetters = [];
             this.remainingAttempts = 0;
 
-            // Clear in game notices.
+            // Clear per word page notices.
             this.elTimerMessage.textContent = "";
             this.elHint.textContent = "";
             this.elWrongLetterTitle.style.display = 'none';
@@ -248,8 +294,18 @@
                 // on the element.
             }
 
-            // Start next game.
-            this.init(this.words);
+            /**
+             * Start with the next word.
+             *
+             * Here we check if the playing words have been exhausted. If so,
+             * we seed the game again, with the copy that was made at page
+             * load. -- Makes the game continuous! --
+             */
+            if (this.words.length === 0) {
+                this.init(this.wordList.slice());
+            } else {
+                this.init(this.words);
+            }
         },
 
         /**
